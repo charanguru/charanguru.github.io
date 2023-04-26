@@ -1,0 +1,283 @@
+:root {
+    --wheel-font: 'Fira Code', sans-serif;
+    --wheel-size: 300px;
+    --wheel-slice-spacing: 50px;
+    --wheel-border-size: 5px;
+    --wheel-color: #F7CE46;
+    --neutral-color: #000000;;
+    --PI: 3.14159265358979;
+    --nb-item: 8;
+    --item-nb: 0;
+    --selected-item: 0;
+    --nb-turn: 5;
+    --spinning-duration: 4s;
+    --reset-duration: 0.25s;
+  }
+
+  .main {
+    background-color: #F7F6F3;
+  }
+
+  @media only screen and (max-width: 600px) {
+  .App {
+    width: 100vw;
+  }
+}
+  
+  .App {
+    font-family: var(--wheel-font);
+    text-align: center;
+    width: 360px;
+    height: auto;
+    margin: auto;
+    background-color: #FFFFFF;
+    align-items: center;
+  }
+
+  .wheelPin {
+    z-index: 1440;
+    position: relative;
+    top: 20px;
+  }
+
+  .wheelPin-tilted {
+    animation: wheelPinRotate 0.5s infinite;
+  }
+
+  @keyframes wheelPinRotate {
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(-15deg);
+    }
+  }
+
+  .header {
+    margin-left: 20px;
+    padding-top: 10px;
+  }
+
+  .info {
+    width: 320px;
+    height: 130px;
+    border-radius: 12px;
+    background-color: #FFFFFF;
+    gap: 6px;
+    padding: 16px 24px;
+    box-sizing: border-box;
+    margin: auto;
+    font-size: 13px;
+  }
+
+  .result-info {
+    padding: 7px;
+    font-size: 13px;
+  }
+  
+  .help {
+    padding: 27px;
+    font-size: 13px;
+  }
+
+  .spin-wheel {
+    align-items: center;
+    position: relative;
+    width: 360px;
+    height: 370px;
+    background-color: #F7F6F3;
+  }
+
+  .bar {
+    fill: #FFDDA1;
+    animation: spin-progress 4s infinite ease-in;
+  }
+
+  .animation-bar {
+    position: relative;
+     display: block;
+     padding: 5px;
+     font-size: 16px;
+     line-height: 16px;
+     border-radius: 30px;
+     background: rgba(0, 0, 0, 0.1);
+     box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.25), 0 1px rgba(255, 255, 255, 0.08);
+  }
+
+  .animation-progress {
+    position: relative;
+     display: block;
+     /* vertical-align: middle; */
+     height: 20px;
+     border-radius: 10px 0 0 10px;
+     overflow: hidden;
+     background-color: #f56982;
+     background-size: 100%;
+     background-image: linear-gradient(90deg, #E23A3A -5.09%, #DBD174 44.46%, #148E2F 87.58%);
+     animation: spin-progress 4s infinite linear;
+  }
+
+  @keyframes spin-progress {
+    0% {
+      width: 0%;
+    }
+    25% {
+      width: 25%;
+    }
+    50% {
+      width: 50%;
+    }
+    75% {
+      width: 75%;
+    }
+    100% {
+      width: 100%;
+    }
+  }
+  
+
+  /* .wheel-upper {
+    position: absolute;
+    width: 60px;
+    height: 10px;
+    left: 153.95px;
+    top: 119px;
+
+    background: #FFDDA1;
+    border-radius: 2px;
+  }
+
+  .wheel-triangle {
+    position: absolute;
+    width: 0;
+    height: 0;
+    left: 169.18px;
+    top: 126.5px;
+    border-left: 15px solid transparent;
+    border-right: 15px solid transparent;
+    border-top: 30px solid #FFDDA1;
+    z-index: 40;
+    background: #FFDDA1;
+    transform: rotate(-180deg);
+  } */
+
+  /* Wheel container = outer deep pink circle */
+  .wheel-container {
+    display: block;
+    position: relative;
+    box-sizing: content-box;
+    width: calc(var(--wheel-size) + 2 * var(--wheel-border-size));
+    height: calc(var(--wheel-size) + 2 * var(--wheel-border-size));
+    padding: 3px;
+    margin: auto;
+    background-color: var(--neutral-color);
+    border: solid var(--wheel-color) 3px;
+    border-radius: 50%;
+    user-select: none;
+    font-size: 12px;
+  }
+  /* Selection triangle = 1 pink + 1 white */
+  .wheel-container::before,
+  .wheel-container::after {
+    content: '';
+    display: block;
+    position: absolute;
+    height: 0;
+    width: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 2;
+    border: solid transparent 20px;
+    border-left-width: 0;
+  }
+  
+  /* .wheel-container::before {
+    right: 0px;
+    border-right-color: var(--wheel-color);
+  }
+   */
+  /* .wheel-container::after {
+    right: -5px;
+    border-right-color: var(--neutral-color);
+  } */
+  
+  /* Wheel */
+  .wheel {
+    display: block;
+    position: relative;
+    box-sizing: content-box;
+    margin: auto;
+    width: var(--wheel-size);
+    height: var(--wheel-size);
+    overflow: hidden;
+    border-radius: 50%;
+    border: solid var(--wheel-color) var(--wheel-border-size);
+    background-color: var(--wheel-color);
+    transition: transform var(--reset-duration);
+    transform: rotate(0deg);
+    cursor: pointer;
+  }
+  
+  .wheel.spinning {
+    transition: transform var(--spinning-duration);
+    transform: rotate(calc(var(--nb-turn) * 360deg + (-360deg * var(--selected-item) / var(--nb-item, 1))));
+  }
+  
+  /* center of the wheel = yellow circle in the center */
+  .wheel::after {
+    display: block;
+    position: absolute;
+    content: '';
+    background-color: #FFDDA1;
+    width: 68px;
+    height: 68px;
+    z-index: 2;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    border-radius: 50%;
+  }
+  
+  /* Element on the wheel */
+  .wheel-item {
+    display: block;
+    position: absolute;
+    box-sizing: border-box;
+  
+    /* item position */
+    top: 50%;
+    left: 50%;
+    width: 50%;
+    transform-origin: center left;
+    transform: translateY(-50%) rotate(calc(var(--item-nb) * (360deg / var(--nb-item, 1))));
+  
+    /* text */
+    color: var(--neutral-color);
+    text-align: right;
+    padding: 0 25px 0 50px;
+    font-family: var(--wheel-font);
+  }
+  
+  /* Element background */
+  .wheel-item:before {
+    content: ' ';
+    display: block;
+    position: absolute;
+    box-sizing: border-box;
+    z-index: -1;
+    width: 0;
+    height: 0;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding-left: 0px;
+    opacity: 0.056;
+  
+    --slice-max-width: calc(var(--PI) * var(--wheel-size) + var(--wheel-size) / 2);
+    --slice-width: calc((var(--slice-max-width) / var(--nb-item)) - var(--wheel-slice-spacing));
+    border: solid transparent calc(var(--slice-width) / 2);
+    border-left: solid transparent 0;
+    /* depth of the triangle = from the center of the wheel to the edge = 300px / 2 */
+    border-right: solid var(--neutral-color) calc(var(--wheel-size) / 2);
+  }
+  
